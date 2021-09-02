@@ -3,7 +3,8 @@
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
-
+const myName = axios.get('https://api.github.com/users/Arison13')
+console.log(myName);
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -28,7 +29,7 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -49,6 +50,58 @@ const followersArray = [];
       </div>
     </div>
 */
+const cards = document.querySelector('.cards');
+const followersArray = ["tetondan", "dustinmyers", "justsml", "luishrd", "bigknell"];
+followersArray.forEach(person => {
+  const newPerson = axios.get(`https://api.github.com/users/${person}`)
+  makeCard(newPerson)
+  cards.appendChild(makeCard(newPerson));
+})
+
+function makeCard(object){
+  //creating elements
+  const containerDiv = document.createElement('div')
+  const image = document.createElement('img')
+  const secondDiv = document.createElement('div')
+  const h3 = document.createElement('h3')
+  const p1 = document.createElement('p')
+  const p2 = document.createElement('p')
+  const p3 = document.createElement('p')
+  const a = document.createElement('a')
+  const p4 = document.createElement('p')
+  const p5 = document.createElement('p')
+  const p6 = document.createElement('p')
+  //kids and hierarchy
+  containerDiv.appendChild(image)
+  containerDiv.appendChild(secondDiv)
+  secondDiv.appendChild(h3)
+  secondDiv.appendChild(p1)
+  secondDiv.appendChild(p2)
+  secondDiv.appendChild(p3)
+  secondDiv.appendChild(a)
+  secondDiv.appendChild(p4)
+  secondDiv.appendChild(p5)
+  secondDiv.appendChild(p6)
+  p3.appendChild(a)
+//adding classes
+  containerDiv.classList.add('card')
+  secondDiv.classList.add('card-info')
+  h3.classList.add('name')
+  p1.classList.add('username')
+object
+  .then(response => {
+    image.src = response.data.avatar_url
+    h3.textContent = response.data.name
+    p1.textContent = response.data.login
+    p2.textContent = (`Location: ${response.data.location}`)
+    a.textContent = `Profile: ${response.data.html_url}`
+    p4.textContent = `Followers: ${response.data.followers}`
+    p5.textContent = `Following: ${response.data.following}`
+    p6.textContent = `Bio: ${response.data.bio}`
+  })
+  return containerDiv
+}
+
 
 /*
   List of LS Instructors Github username's:
